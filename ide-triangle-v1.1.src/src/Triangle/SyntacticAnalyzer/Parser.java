@@ -31,12 +31,16 @@ import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FormalParameter;
 import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
@@ -337,6 +341,7 @@ public class Parser {
                         acceptIt();
                         Expression eAST = parseExpression();
                         accept(Token.END);
+                        commandAST = new DoWhileCommand(cAST,eAST, commandPos);
                         break;
                     }
                     case Token.UNTIL:
@@ -344,6 +349,7 @@ public class Parser {
                         acceptIt();
                         Expression eAST = parseExpression();
                         accept(Token.END);
+                        commandAST = new DoUntilCommand(cAST,eAST, commandPos);
                         break;
                     }
                 }
@@ -365,6 +371,7 @@ public class Parser {
                         acceptIt();
                         Command cAST = parseCommand();
                         accept(Token.END);
+                        commandAST = new ForCommand(iAST,eAST,eAST1,cAST, commandPos);
                         break;
                     }
                     case Token.WHILE:{
@@ -373,6 +380,7 @@ public class Parser {
                         accept(Token.DO);
                         Command c1AST = parseCommand();
                         accept(Token.END);
+                        commandAST = new ForWhileCommand(iAST,eAST,eAST1,eAST2,c1AST, commandPos);
                         break;
                     }
                     case Token.UNTIL:{
@@ -381,6 +389,7 @@ public class Parser {
                         accept(Token.DO);
                         Command c2AST = parseCommand();
                         accept(Token.END);
+                        commandAST = new ForWhileCommand(iAST,eAST,eAST1,eAST2,c2AST, commandPos);
                     }
                             
                       
@@ -400,6 +409,7 @@ public class Parser {
         accept(Token.IN);
         Command cAST = parseCommand();
         accept(Token.END);
+        commandAST = new LetCommand(dAST, cAST, commandPos);
         break;
     }
     case Token.IF:
@@ -411,6 +421,7 @@ public class Parser {
         accept(Token.ELSE);
         Command c1AST = parseCommand();
         accept(Token.END);
+        commandAST = new IfCommand(eAST, cAST,c1AST, commandPos);
         break;
     }
     case Token.CHOOSE:
