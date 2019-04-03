@@ -14,6 +14,7 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -43,6 +44,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -77,6 +79,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * Generates DefaultMutableTreeNodes, used to draw a JTree.
  *
  * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ */
+
+/**
+ * 
+ * @author Charlie
+ *
+ * Todo
+ * Should search see if case literal visitor is correctley implemented
  */
 public class TreeVisitor implements Visitor {
       
@@ -113,8 +123,15 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
-        return(createBinary("While Command", ast.E, ast.C));
+                return(createBinary("While Command", ast.E, ast.C));
+
     }
+    
+     @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+        return(createBinary("CaseLiteral", aThis.IntegerLiteral, aThis.CharacterLiteral));
+    }
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -358,6 +375,11 @@ public class TreeVisitor implements Visitor {
     public Object visitProgram(Program ast, Object obj) {
         return(createUnary("Program", ast.C));
     }
+    
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+                return(createUnary("Program", ast.C));
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Tree Creation Methods ">
@@ -437,4 +459,8 @@ public class TreeVisitor implements Visitor {
         return(t);             
     }
     // </editor-fold>
+
+    
+
+   
 }

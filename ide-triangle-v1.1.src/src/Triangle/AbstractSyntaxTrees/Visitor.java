@@ -103,6 +103,8 @@ public interface Visitor {
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
+  
+  public abstract Object visitPackageDeclaration(PackageDeclaration ast, Object o);
 
   public abstract Object visitCaseLiteral(CaseLiteral aThis, Object o);
 

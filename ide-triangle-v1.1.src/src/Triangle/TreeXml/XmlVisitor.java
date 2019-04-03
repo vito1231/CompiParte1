@@ -24,6 +24,7 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -122,6 +123,11 @@ public class XmlVisitor implements Visitor {
   public Object visitWhileCommand(WhileCommand ast, Object obj) {
     return xmlBinary("WhileCommand", ast.E, ast.C);
   }
+  
+    @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+       return xmlBinary("CaseLiteral", aThis.IntegerLiteral, aThis.CharacterLiteral);
+    }
 
 
   // Expressions
@@ -424,4 +430,6 @@ public class XmlVisitor implements Visitor {
        generatedElement.appendChild(childElmenet4);
        return generatedElement;
   }
+
+  
 }

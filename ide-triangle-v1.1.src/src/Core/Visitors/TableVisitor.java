@@ -14,6 +14,7 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -43,6 +44,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -140,6 +142,16 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
+  
+  
+   @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+        aThis.IntegerLiteral.visit(this, o);        
+        aThis.CharacterLiteral.visit(this, o);
+        
+        return(null);
+
+    }
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -586,6 +598,14 @@ public class TableVisitor implements Visitor {
       return(null);
   }
   
+   @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+              ast.C.visit(this, null);
+              
+              return(null);
+    }
+
+  
     /**
      * Adds an identifier to the table.
      */
@@ -622,4 +642,7 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
+
+   
+   
 }

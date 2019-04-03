@@ -14,5 +14,6 @@
 <h2>Pendientes single command</h2>
 <ul>
 	<li>choose command</li>
-	<li>Add visit function to package declaration</li>
+	<li>case literal encoder</li>
+	<li>case literal in visitors around the code including the encoder, treeVisitor and checker</li>
 </ul>
