@@ -104,4 +104,7 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
+  //Packages
+  public abstract Object visitPackageDeclaration(PackageDeclaration ast, Object o);
+
 }

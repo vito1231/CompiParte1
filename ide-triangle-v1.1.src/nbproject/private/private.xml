@@ -3,6 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/charli83/Workspace/2019/Compiladores%20e%20interpretes/Proyectos/Proyecto1Grupal/CompiParte1/ide-triangle-v1.1.src/src/Triangle/TreeXml/XmlGenerator.java</file>
+            <file>file:/home/charli83/Workspace/2019/Compiladores%20e%20interpretes/Proyectos/Proyecto1Grupal/CompiParte1/ide-triangle-v1.1.src/src/Triangle/AbstractSyntaxTrees/PackageDeclaration.java</file>
+            <file>file:/home/charli83/Workspace/2019/Compiladores%20e%20interpretes/Proyectos/Proyecto1Grupal/CompiParte1/ide-triangle-v1.1.src/src/Triangle/TreeXml/XmlVisitor.java</file>
+            <file>file:/home/charli83/Workspace/2019/Compiladores%20e%20interpretes/Proyectos/Proyecto1Grupal/CompiParte1/ide-triangle-v1.1.src/src/Triangle/TreeDrawer/LayoutVisitor.java</file>
+        </group>
     </open-files>
 </project-private>

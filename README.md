@@ -14,4 +14,5 @@
 <h2>Pendientes single command</h2>
 <ul>
 	<li>choose command</li>
+	<li>Add visit function to package declaration</li>
 </ul>
