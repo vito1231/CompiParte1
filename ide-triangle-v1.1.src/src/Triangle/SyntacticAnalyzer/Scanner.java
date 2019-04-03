@@ -48,6 +48,7 @@ public final class Scanner {
     sourceFile = source;
     currentChar = sourceFile.getSource();
     debug = false;
+   
   }
 
   public void enableDebugging() {

@@ -75,6 +75,7 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -309,8 +310,9 @@ public class Parser {
                 acceptIt();
                 Expression eAST = parseExpression();
                 accept(Token.DO);
-                Command cAST = parseSingleCommand();
+                Command cAST = parseCommand();
                 accept(Token.END);
+                commandAST = new WhileCommand(eAST, cAST, commandPos);
                 break;
                         
             }
@@ -319,15 +321,16 @@ public class Parser {
                 acceptIt();
                 Expression eAST = parseExpression();
                 accept(Token.DO);
-                Command cAST = parseSingleCommand();
+                Command cAST = parseCommand();
                 accept(Token.END);
+                commandAST = new UntilCommand(eAST, cAST, commandPos);
                 break;
                         
             }
             case Token.DO:
             {
                 acceptIt();
-                Command cAST = parseSingleCommand();
+                Command cAST = parseCommand();
                 switch(currentToken.kind){
                     case Token.WHILE:
                     {

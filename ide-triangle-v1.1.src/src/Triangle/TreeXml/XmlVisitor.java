@@ -31,12 +31,17 @@ import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
@@ -74,6 +79,7 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -122,6 +128,31 @@ public class XmlVisitor implements Visitor {
 
   public Object visitWhileCommand(WhileCommand ast, Object obj) {
     return xmlBinary("WhileCommand", ast.E, ast.C);
+  }
+  
+  public Object visitUntilCommand(UntilCommand ast, Object obj) {
+    return xmlBinary("UntilCommand", ast.E, ast.C);
+  }
+  
+  public Object visitDoUntilCommand(DoUntilCommand ast, Object obj) {
+    return xmlBinary("DoUntilCommand", ast.E, ast.C);
+  }
+  
+  public Object visitDoWhileCommand(DoWhileCommand ast, Object obj) {
+    return xmlBinary("DoWhileCommand", ast.E, ast.C);
+  }
+  
+  
+  public Object visitForCommand(ForCommand ast, Object obj) {
+    return xmlQuaternary("UntilCommand",ast.I, ast.E, ast.E2, ast.C);
+  }
+  
+ public Object visitForUntilCommand(ForUntilCommand ast, Object obj) {
+    return xmlFive("UntilCommand",ast.I, ast.E, ast.E2, ast.E2, ast.C);
+  }
+ 
+  public Object visitForWhileCommand(ForWhileCommand ast, Object obj) {
+    return xmlFive("UntilCommand",ast.I, ast.E, ast.E2, ast.E2, ast.C);
   }
   
     @Override
@@ -337,19 +368,20 @@ public class XmlVisitor implements Visitor {
 
   // Literals, Identifiers and Operators
   public Object visitCharacterLiteral(CharacterLiteral ast, Object obj) {
-    return xmlNullary(ast.spelling);
+    return xmlNullary("Character",ast.spelling);
   }
 
   public Object visitIdentifier(Identifier ast, Object obj) {
-    return xmlNullary(ast.spelling);
+    return xmlNullary("Identifier",ast.spelling);
  }
 
   public Object visitIntegerLiteral(IntegerLiteral ast, Object obj) {
-    return xmlNullary(ast.spelling);
+    //System.out.println(ast.spelling);
+    return xmlNullary("Integer",ast.spelling);
   }
 
   public Object visitOperator(Operator ast, Object obj) {
-    return xmlNullary(ast.spelling);
+    return xmlNullary("Operator",ast.spelling);
   }
 
 
@@ -359,11 +391,11 @@ public class XmlVisitor implements Visitor {
   }
 
   public Object visitSimpleVname(SimpleVname ast, Object obj) {
-    return xmlUnary("Sim.Vname", ast.I);
+    return xmlUnary("SimpleVname", ast.I);
   }
 
   public Object visitSubscriptVname(SubscriptVname ast, Object obj) {
-    return xmlBinary("Sub.Vname",
+    return xmlBinary("SubscriptVname",
         ast.V, ast.E);
   }
 
@@ -384,6 +416,12 @@ public class XmlVisitor implements Visitor {
        return generatedElement;
   }
 
+  private Element xmlNullary(String name, String value){
+       Element generatedElement = document.createElement(name);
+       generatedElement.setTextContent(value);
+       return generatedElement;
+  }
+  
   private Element xmlNullary(String name){
        Element generatedElement = document.createElement(name);
        return generatedElement;
@@ -428,6 +466,22 @@ public class XmlVisitor implements Visitor {
        generatedElement.appendChild(childElmenet2);
        generatedElement.appendChild(childElmenet3);
        generatedElement.appendChild(childElmenet4);
+       return generatedElement;
+  }
+    
+    private Element xmlFive(String name, AST child1, AST child2,
+                                     AST child3, AST child4, AST child5){
+       Element generatedElement = xmlCaption(name);
+       Element childElmenet = (Element) child1.visit(this, null);
+       Element childElmenet2 = (Element) child2.visit(this, null);
+       Element childElmenet3 = (Element) child3.visit(this, null);
+       Element childElmenet4 = (Element) child4.visit(this, null);
+       Element childElmenet5 = (Element) child5.visit(this, null);
+       generatedElement.appendChild(childElmenet);
+       generatedElement.appendChild(childElmenet2);
+       generatedElement.appendChild(childElmenet3);
+       generatedElement.appendChild(childElmenet4);
+       generatedElement.appendChild(childElmenet5);
        return generatedElement;
   }
 

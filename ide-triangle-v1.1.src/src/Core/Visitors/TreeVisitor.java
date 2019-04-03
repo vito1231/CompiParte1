@@ -21,12 +21,17 @@ import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
@@ -64,6 +69,7 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -124,6 +130,30 @@ public class TreeVisitor implements Visitor {
     
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
                 return(createBinary("While Command", ast.E, ast.C));
+
+    }
+    
+    public Object visitUntilCommand(UntilCommand ast, Object obj) {
+                return(createBinary("Until Command", ast.E, ast.C));
+
+    }
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object obj) {
+                return(createBinary("Do While Command", ast.E, ast.C));
+
+    }
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object obj) {
+                return(createBinary("Do Until Command", ast.E, ast.C));
+
+    }
+    public Object visitForCommand(ForCommand ast, Object obj) {
+                return(createQuaternary("Do While Command", ast.I,ast.E, ast.E2, ast.C));
+
+    }
+    public Object visitForUntilCommand(ForUntilCommand ast, Object obj) {
+                return(createFive("Do While Command", ast.I,ast.E, ast.E2, ast.E3, ast.C));
+    }
+    public Object visitForWhileCommand(ForWhileCommand ast, Object obj) {
+                return(createFive("Do While Command", ast.I,ast.E, ast.E2, ast.E3, ast.C));
 
     }
     
@@ -455,6 +485,18 @@ public class TreeVisitor implements Visitor {
         t.add((DefaultMutableTreeNode)child2.visit(this, null));
         t.add((DefaultMutableTreeNode)child3.visit(this, null));
         t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        
+        return(t);             
+    }
+    
+    public DefaultMutableTreeNode createFive(String caption, AST child1, AST child2, AST child3, AST child4, AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
+
         
         return(t);             
     }

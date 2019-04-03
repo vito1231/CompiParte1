@@ -21,9 +21,7 @@ public class XmlGenerator {
     //could be a dialog
     public static final String xmlFilePath = "C:\\Users\\nikos7\\Desktop\\files\\xmlfile.xml";
     
-    private XmlVisitor visitor;
     private Program theAst;
-    private Document document;
     DocumentBuilderFactory documentFactory;
     DocumentBuilder documentBuilder;
 
@@ -32,37 +30,37 @@ public class XmlGenerator {
 
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
-        document = documentBuilder.newDocument();
 
-        visitor = new XmlVisitor(document); 
+        
     }
 
 
 
-    public Element getXmlAstRepresentation(){
-
-        
+    public Document getXmlAstRepresentation(){
+        Document savedDocument = documentBuilder.newDocument();
+        XmlVisitor visitor = new XmlVisitor(savedDocument); 
         Element root = (Element)theAst.visit(visitor,null);
-        return root;
+        savedDocument.appendChild(root);
+        return savedDocument;
        
 
   
     }
 
     public void SaveXmlRepresentation(String savePath){
-        Element root = getXmlAstRepresentation();
-        Document savedDocument = documentBuilder.newDocument();
-        savedDocument.appendChild(root);
+        Document savedDocument = getXmlAstRepresentation();
+
         //saving code
         try{
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(savePath));
+            DOMSource domSource = new DOMSource(savedDocument);
+            File saveFile = new File(savePath);
+            StreamResult streamResult = new StreamResult(saveFile);
             transformer.transform(domSource, streamResult);
             System.out.println("Done saving ast to " + savePath);
         }catch(Exception e){
-            System.out.println("Error saving ast to " + savePath);
+            System.out.println("Error saving ast to " + savePath + " "+e.toString());
         }
         
     }

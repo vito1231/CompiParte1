@@ -72,7 +72,6 @@ public class Compiler {
             System.out.println("Can't access source file " + sourceName);
             System.exit(1);
         }
-
         scanner  = new Scanner(source);
         reporter = new ErrorReporter();
         parser   = new Parser(scanner, reporter);
@@ -80,7 +79,7 @@ public class Compiler {
         encoder  = new Encoder(reporter);
         drawer   = new Drawer();
 
-        // scanner.enableDebugging();
+        //scanner.enableDebugging();
         theAST = parser.parseProgram();				// 1st pass
         if (reporter.numErrors == 0) {
             //if (showingAST) {

@@ -13,6 +13,8 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.ContextualAnalyzer.Checker;
 import Triangle.CodeGenerator.Encoder;
+import Triangle.TreeXml.XmlGenerator;
+import javax.xml.parsers.ParserConfigurationException;
 
 
 
@@ -47,11 +49,29 @@ public class IDECompiler {
         System.out.println("Syntactic Analysis ...");
         SourceFile source = new SourceFile(sourceName);
         Scanner scanner = new Scanner(source);
+        scanner.enableDebugging();//enable scaner debug
         report = new IDEReporter();
         Parser parser = new Parser(scanner, report);
         boolean success = false;
         
         rootAST = parser.parseProgram();
+        
+        System.out.println("Valid command on program: " + !(rootAST.C == null));
+        //generate xml
+        try{
+            XmlGenerator generator = new XmlGenerator(rootAST);
+            //System.out.println("Tring to save file "+ sourceName + ".xml");
+            generator.SaveXmlRepresentation(sourceName + ".xml");
+        }catch(ParserConfigurationException e) {
+            System.out.println("Error saving file" + e.toString());
+            e.printStackTrace(System.out);
+        }
+        catch(Exception e){
+            System.out.println("Error saving file" + e.toString());
+            e.printStackTrace(System.out);
+        }
+        
+        
         if (report.numErrors == 0) {
  //           System.out.println("Contextual Analysis ...");
    //         Checker checker = new Checker(report);

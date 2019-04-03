@@ -9,6 +9,7 @@ import Core.Console.OutputRedirector;
 import Core.IDE.IDEDisassembler;
 import Core.IDE.IDEInterpreter;
 import Core.Visitors.TableVisitor;
+
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;

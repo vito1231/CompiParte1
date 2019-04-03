@@ -21,12 +21,17 @@ import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
@@ -64,6 +69,7 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -138,6 +144,56 @@ public class TableVisitor implements Visitor {
   
   public Object visitWhileCommand(WhileCommand ast, Object o) { 
       ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+  
+   public Object visitUntilCommand(UntilCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+   
+   public Object visitDoWhileCommand(DoWhileCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+   
+   public Object visitDoUntilCommand(DoUntilCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+  
+   public Object visitForCommand(ForCommand ast, Object o) { 
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+   
+   public Object visitForUntilCommand(ForUntilCommand ast, Object o) { 
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      
+      return(null);
+  }
+   
+   public Object visitForWhileCommand(ForWhileCommand ast, Object o) { 
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
       ast.C.visit(this, null);
       
       return(null);
