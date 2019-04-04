@@ -18,14 +18,16 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class Program extends AST {
 
-  public Program (Command cAST, SourcePosition thePosition) {
+  public Program (PackageDeclaration dAST,Command cAST , SourcePosition thePosition) {
     super (thePosition);
     C = cAST;
+    D = dAST;
   }
 
   public Object visit(Visitor v, Object o) {
     return v.visitProgram(this, o);
   }
 
+  public PackageDeclaration D;
   public Command C;
 }

@@ -62,6 +62,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -70,12 +71,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
@@ -99,6 +102,7 @@ public class LayoutVisitor implements Visitor {
   public LayoutVisitor (FontMetrics fontMetrics) {
     this.fontMetrics = fontMetrics;
   }
+  // <editor-fold defaultstate="collapsed" desc=" Commands ">
 
   // Commands
   public Object visitAssignCommand(AssignCommand ast, Object obj) {
@@ -147,7 +151,9 @@ public class LayoutVisitor implements Visitor {
   public Object visitForWhileCommand(ForWhileCommand ast, Object obj) {
     return layoutFive("UntilCom.",ast.I, ast.E, ast.E2, ast.E2, ast.C);
   }
-
+  // </editor-fold>
+  
+  // <editor-fold defaultstate="collapsed" desc=" Expressions ">
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
     return layoutUnary("ArrayExpr.", ast.AA);
@@ -192,8 +198,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitVnameExpression(VnameExpression ast, Object obj) {
     return layoutUnary("VnameExpr.", ast.V);
   }
-
-
+  // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc=" Declarations ">
   // Declarations
   public Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object obj) {
     return layoutQuaternary("Bin.Op.Decl.", ast.O, ast.ARG1, ast.ARG2, ast.RES);
@@ -227,7 +233,7 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
 
-
+  // <editor-fold defaultstate="collapsed" desc=" Aggregates ">
   // Array Aggregates
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object obj) {
     return layoutBinary("Mult.ArrayAgg.", ast.E, ast.AA);
@@ -236,8 +242,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitSingleArrayAggregate(SingleArrayAggregate ast, Object obj) {
     return layoutUnary("Sing.ArrayAgg.", ast.E);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" RecordAggregates ">
   // Record Aggregates
   public Object visitMultipleRecordAggregate(MultipleRecordAggregate ast, Object obj) {
     return layoutTernary("Mult.Rec.Agg.", ast.I, ast.E, ast.RA);
@@ -246,8 +252,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitSingleRecordAggregate(SingleRecordAggregate ast, Object obj) {
     return layoutBinary("Sing.Rec.Agg.", ast.I, ast.E);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" FormalParameters ">
   // Formal Parameters
   public Object visitConstFormalParameter(ConstFormalParameter ast, Object obj) {
     return layoutBinary("ConstF.P.", ast.I, ast.T);
@@ -277,8 +283,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitSingleFormalParameterSequence(SingleFormalParameterSequence ast, Object obj) {
     return layoutUnary("Sing.F.P.S.", ast.FP);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" ActualParameters ">
   // Actual Parameters
   public Object visitConstActualParameter(ConstActualParameter ast, Object obj) {
     return layoutUnary("ConstA.P.", ast.E);
@@ -308,8 +314,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitSingleActualParameterSequence(SingleActualParameterSequence ast, Object obj) {
     return layoutUnary("Sing.A.P.S.", ast.AP);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" Type Denoters ">
   // Type Denoters
   public Object visitAnyTypeDenoter(AnyTypeDenoter ast, Object obj) {
     return layoutNullary("any");
@@ -351,8 +357,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitSingleFieldTypeDenoter(SingleFieldTypeDenoter ast, Object obj) {
     return layoutBinary("Sing.F.TypeD.", ast.I, ast.T);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" Literals, Identifiers and Operators ">
   // Literals, Identifiers and Operators
   public Object visitCharacterLiteral(CharacterLiteral ast, Object obj) {
     return layoutNullary(ast.spelling);
@@ -360,8 +366,10 @@ public class LayoutVisitor implements Visitor {
 
   public Object visitIdentifier(Identifier ast, Object obj) {
     return layoutNullary(ast.spelling);
- }
-
+  }
+    public Object visitPackageIdentifier(PackageIdentifier ast, Object obj) {
+    return layoutNullary(ast.spelling);
+  }
   public Object visitIntegerLiteral(IntegerLiteral ast, Object obj) {
     return layoutNullary(ast.spelling);
   }
@@ -369,7 +377,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitOperator(Operator ast, Object obj) {
     return layoutNullary(ast.spelling);
   }
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" Value-or-variable names">
 
   // Value-or-variable names
   public Object visitDotVname(DotVname ast, Object obj) {
@@ -384,16 +393,22 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("Sub.Vname",
         ast.V, ast.E);
   }
-
-
+  // </editor-fold>
+  // <editor-fold defaultstate="collapsed" desc=" Programs">
   // Programs
   public Object visitProgram(Program ast, Object obj) {
-    return layoutUnary("Program", ast.C);
+    return layoutBinary("Program",ast.D, ast.C);
   }
-
+  // </editor-fold>
+  
+  
    // Package
-  public Object visitPackageDeclaration(PackageDeclaration ast, Object obj) {
-    return layoutUnary("PackageDeclaration", ast.C);
+   public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object obj) {
+     return layoutUnary("SinglePackageDeclaration", ast.D);
+  }
+  
+  public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object obj) {
+     return layoutBinary("SequentialPackageDeclaration", ast.D, ast.D2);
   }
 
   private DrawingTree layoutCaption (String name) {

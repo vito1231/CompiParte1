@@ -98,6 +98,7 @@ public interface Visitor {
   // Literals, Identifiers and Operators
   public abstract Object visitCharacterLiteral(CharacterLiteral ast, Object o);
   public abstract Object visitIdentifier(Identifier ast, Object o);
+  public abstract Object visitPackageIdentifier(PackageIdentifier ast, Object o);
   public abstract Object visitIntegerLiteral(IntegerLiteral ast, Object o);
   public abstract Object visitOperator(Operator ast, Object o);
 
@@ -109,7 +110,9 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
   
-  public abstract Object visitPackageDeclaration(PackageDeclaration ast, Object o);
+
+  public abstract Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o);
+  public abstract Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o);
 
   public abstract Object visitCaseLiteral(CaseLiteral aThis, Object o);
 

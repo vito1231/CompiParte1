@@ -65,6 +65,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -73,12 +74,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.Terminal;
@@ -723,6 +726,14 @@ public final class Checker implements Visitor {
       I.decl = binding;
     return binding;
   }
+  //should revise id Table for packages
+  public Object visitPackageIdentifier(PackageIdentifier I, Object o) {
+    Declaration binding = idTable.retrieve(I.spelling);
+    if (binding != null)
+      I.decl = binding;
+    return binding;
+  }
+
 
   public Object visitIntegerLiteral(IntegerLiteral IL, Object o) {
     return StdEnvironment.integerType;
@@ -817,6 +828,7 @@ public final class Checker implements Visitor {
 
   public Object visitProgram(Program ast, Object o) {
     ast.C.visit(this, null);
+    ast.D.visit(this, null);
     return null;
   }
 
@@ -1022,10 +1034,15 @@ public final class Checker implements Visitor {
     public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-            ast.C.visit(this, null);
+    public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o) {
+            ast.D.visit(this, null);
+            return null;
+    }
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+            ast.D.visit(this, null);
+            ast.D2.visit(this, null);
             return null;
     }
 }

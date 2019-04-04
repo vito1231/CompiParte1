@@ -50,6 +50,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -58,12 +59,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
@@ -379,6 +382,9 @@ public class TreeVisitor implements Visitor {
         return(createNullary(ast.spelling));
     }
     
+    public Object visitPackageIdentifier(PackageIdentifier ast, Object obj) {
+        return(createNullary(ast.spelling));
+    }
     public Object visitIntegerLiteral(IntegerLiteral ast, Object obj) {
         return(createNullary(ast.spelling));
     }
@@ -403,12 +409,13 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitProgram(Program ast, Object obj) {
-        return(createUnary("Program", ast.C));
+        return(createBinary("Program", ast.C,ast.D));
     }
-    
-    @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-                return(createUnary("Program", ast.C));
+    public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o) {
+                return(createUnary("SinglePackageDeclaration", ast.D));
+    }
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+                return(createBinary("SequentialPackageDeclaration", ast.D,ast.D2));
     }
     // </editor-fold>
 

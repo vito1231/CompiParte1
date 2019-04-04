@@ -59,6 +59,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -68,12 +70,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
@@ -147,24 +151,68 @@ public class Parser {
 ///////////////////////////////////////////////////////////////////////////////
 
   public Program parseProgram() {
-
+   //System.out.println("Parsing program...");
     Program programAST = null;
 
     previousTokenPosition.start = 0;
     previousTokenPosition.finish = 0;
     currentToken = lexicalAnalyser.scan();
-
+    
     try {
+      //System.out.println("Parsing program...");
+      PackageDeclaration programPackage = parsePackageDeclaration();
+      System.out.println("valid package: " + (programPackage == null));
       Command cAST = parseCommand();
-      programAST = new Program(cAST, previousTokenPosition);
+      programAST = new Program(programPackage,cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
           currentToken.spelling);
       }
     }
-    catch (SyntaxError s) { return null; }
+    catch (SyntaxError s) { 
+        System.out.println("Error parsing program " + s.toString());
+        return null;
+    }catch(Exception e){
+        System.out.println("Error parsing program " + e.toString());
+        return null;
+    }
+    
     return programAST;
   }
+  
+  public PackageDeclaration parsePackageDeclaration() throws SyntaxError {
+    PackageDeclaration packageAST = null;      
+
+    SourcePosition commandPos = new SourcePosition();
+
+    start(commandPos);
+    packageAST = parseSinglePackageDeclaration();
+    while (currentToken.kind == Token.PACKAGE) {
+      //acceptIt();
+      //do not consume package token is needed in parse single package
+      PackageDeclaration secondPackageDeclaration = parseSinglePackageDeclaration();
+      finish(commandPos);
+      packageAST = new SequentialPackageDeclaration(packageAST, secondPackageDeclaration, commandPos);
+    }
+      return packageAST;
+  }
+  
+   public SinglePackageDeclaration parseSinglePackageDeclaration() throws SyntaxError {
+      SinglePackageDeclaration packageAST = null;
+      SourcePosition packagePos = new SourcePosition();
+      start(packagePos);
+      parsePackageIdentifier();
+      accept(Token.IS);
+      Declaration dAST = parseDeclaration();
+      accept(Token.END);
+      accept(Token.SEMICOLON);
+      finish(packagePos);
+      packageAST = new SinglePackageDeclaration(dAST, packagePos);
+      
+      
+      return packageAST;
+  }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -225,7 +273,24 @@ public class Parser {
     }
     return I;
   }
+  
+  PackageIdentifier parsePackageIdentifier() throws SyntaxError {
+    PackageIdentifier I = null;
 
+    if (currentToken.kind == Token.PACKAGE) {
+      acceptIt();
+      if (currentToken.kind == Token.IDENTIFIER) {
+      previousTokenPosition = currentToken.position;
+      String spelling = currentToken.spelling;
+      I = new PackageIdentifier(spelling, previousTokenPosition);
+      currentToken = lexicalAnalyser.scan();
+    } else {
+      I = null;
+      syntacticError("identifier expected here", "");
+    }
+    }
+    return I;
+  }
 // parseOperator parses an operator, and constructs a leaf AST to
 // represent it.
 

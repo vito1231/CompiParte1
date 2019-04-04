@@ -50,6 +50,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -58,12 +59,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
@@ -612,6 +615,10 @@ public class TableVisitor implements Visitor {
       return(null);
   }
   
+  public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {             
+      return(null);
+  }
+  
   public Object visitIntegerLiteral(IntegerLiteral ast, Object o) { 
       return(null);
   }
@@ -650,17 +657,21 @@ public class TableVisitor implements Visitor {
   // Programs
   public Object visitProgram(Program ast, Object o) { 
       ast.C.visit(this, null);
+      ast.D.visit(this, null);
       
       return(null);
   }
   
-   @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-              ast.C.visit(this, null);
-              
+  
+    public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o) {
+              ast.D.visit(this, null); 
               return(null);
     }
-
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+              ast.D.visit(this, null);
+              ast.D2.visit(this, null);
+              return(null);
+    }
   
     /**
      * Adds an identifier to the table.
@@ -698,6 +709,8 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
+
+
 
    
    

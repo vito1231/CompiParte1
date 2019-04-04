@@ -60,6 +60,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -68,12 +69,14 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SinglePackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
@@ -374,7 +377,10 @@ public class XmlVisitor implements Visitor {
   public Object visitIdentifier(Identifier ast, Object obj) {
     return xmlNullary("Identifier",ast.spelling);
  }
-
+  
+  public Object visitPackageIdentifier(PackageIdentifier ast, Object obj) {
+    return xmlNullary("PackageIdentifier",ast.spelling);
+ }
   public Object visitIntegerLiteral(IntegerLiteral ast, Object obj) {
     //System.out.println(ast.spelling);
     return xmlNullary("Integer",ast.spelling);
@@ -402,12 +408,16 @@ public class XmlVisitor implements Visitor {
 
   // Programs
   public Object visitProgram(Program ast, Object obj) {
-    return xmlUnary("Program", ast.C);
+    return xmlBinary("Program",ast.D, ast.C);
   }
 
   // Package
-  public Object visitPackageDeclaration(PackageDeclaration ast, Object obj) {
-    return xmlUnary("PackageDeclaration", ast.C);
+  public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object obj) {
+    return xmlUnary("SinglePackageDeclaration", ast.D);
+  }
+   
+   public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object obj) {
+    return xmlBinary("SequentialPackageDeclaration", ast.D, ast.D2);
   }
   
   //xml element generating functions
