@@ -58,6 +58,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -726,6 +727,13 @@ public final class Checker implements Visitor {
       I.decl = binding;
     return binding;
   }
+  //TODO update package to bindings
+  public Object visitLongIdentifier(LongIdentifier I, Object o) {
+    Declaration binding = idTable.retrieve(I.spelling);
+    if (binding != null)
+      I.decl = binding;
+    return binding;
+  }
   //should revise id Table for packages
   public Object visitPackageIdentifier(PackageIdentifier I, Object o) {
     Declaration binding = idTable.retrieve(I.spelling);
@@ -828,6 +836,7 @@ public final class Checker implements Visitor {
 
   public Object visitProgram(Program ast, Object o) {
     ast.C.visit(this, null);
+    if(ast.D != null)
     ast.D.visit(this, null);
     return null;
   }

@@ -53,6 +53,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -378,6 +379,10 @@ public class XmlVisitor implements Visitor {
     return xmlNullary("Identifier",ast.spelling);
  }
   
+  public Object visitLongIdentifier(LongIdentifier ast, Object obj) {
+    return xmlNullary("LongIdentifier",ast.P.spelling +"$"+ast.spelling);
+ }
+  
   public Object visitPackageIdentifier(PackageIdentifier ast, Object obj) {
     return xmlNullary("PackageIdentifier",ast.spelling);
  }
@@ -408,6 +413,8 @@ public class XmlVisitor implements Visitor {
 
   // Programs
   public Object visitProgram(Program ast, Object obj) {
+    if(ast.D == null)
+      return xmlUnary("Program", ast.C);
     return xmlBinary("Program",ast.D, ast.C);
   }
 

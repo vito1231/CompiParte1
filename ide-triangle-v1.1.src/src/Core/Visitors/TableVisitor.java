@@ -43,6 +43,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -614,7 +615,10 @@ public class TableVisitor implements Visitor {
   public Object visitIdentifier(Identifier ast, Object o) {             
       return(null);
   }
-  
+  public Object visitLongIdentifier(LongIdentifier ast, Object o) {             
+      ast.P.visit(this, o);
+      return(null);
+  }
   public Object visitPackageIdentifier(PackageIdentifier ast, Object o) {             
       return(null);
   }
@@ -657,6 +661,7 @@ public class TableVisitor implements Visitor {
   // Programs
   public Object visitProgram(Program ast, Object o) { 
       ast.C.visit(this, null);
+      if(ast.D != null)
       ast.D.visit(this, null);
       
       return(null);

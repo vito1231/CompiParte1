@@ -23,6 +23,12 @@ public class Program extends AST {
     C = cAST;
     D = dAST;
   }
+  
+  public Program (Command cAST , SourcePosition thePosition) {
+    super (thePosition);
+    C = cAST;
+    D = null;
+  }
 
   public Object visit(Visitor v, Object o) {
     return v.visitProgram(this, o);

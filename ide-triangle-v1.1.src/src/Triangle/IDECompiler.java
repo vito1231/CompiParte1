@@ -56,12 +56,14 @@ public class IDECompiler {
         
         rootAST = parser.parseProgram();
         
+        
         System.out.println("Valid command on program: " + !(rootAST.C == null));
         //generate xml
         try{
             XmlGenerator generator = new XmlGenerator(rootAST);
             //System.out.println("Tring to save file "+ sourceName + ".xml");
-            generator.SaveXmlRepresentation(sourceName + ".xml");
+            String xmlPath = sourceName.replace(".tri",".xml");
+            generator.SaveXmlRepresentation(xmlPath);
         }catch(ParserConfigurationException e) {
             System.out.println("Error saving file" + e.toString());
             e.printStackTrace(System.out);

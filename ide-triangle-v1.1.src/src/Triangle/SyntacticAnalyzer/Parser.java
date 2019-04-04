@@ -53,6 +53,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -160,8 +161,12 @@ public class Parser {
     
     try {
       //System.out.println("Parsing program...");
-      PackageDeclaration programPackage = parsePackageDeclaration();
-      System.out.println("valid package: " + (programPackage == null));
+      PackageDeclaration programPackage = null;
+      if(currentToken.kind == Token.PACKAGE){
+          programPackage = parsePackageDeclaration();
+          System.out.println("valid package: " + (programPackage == null));
+          
+      }
       Command cAST = parseCommand();
       programAST = new Program(programPackage,cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
@@ -201,6 +206,7 @@ public class Parser {
       SinglePackageDeclaration packageAST = null;
       SourcePosition packagePos = new SourcePosition();
       start(packagePos);
+      accept(Token.PACKAGE);
       parsePackageIdentifier();
       accept(Token.IS);
       Declaration dAST = parseDeclaration();
@@ -261,8 +267,36 @@ public class Parser {
 
   Identifier parseIdentifier() throws SyntaxError {
     Identifier I = null;
-
+    SourcePosition identifierPos = new SourcePosition();
+    start(identifierPos);
     if (currentToken.kind == Token.IDENTIFIER) {
+      String spelling = currentToken.spelling;
+      System.out.println("current Token "+ currentToken.kind );
+      acceptIt();
+      System.out.println("current Token - "+ currentToken.kind );
+      if(currentToken.kind == Token.DOLAR){
+          System.out.println("Long Identifier");
+          acceptIt();
+          PackageIdentifier piAST = parsePackageIdentifier();
+          finish(identifierPos);
+          I = new LongIdentifier(piAST,spelling, identifierPos);
+          System.out.println("Current Token "+ currentToken.kind );
+      }else{
+          System.out.println("Normal Identifier "+ currentToken.kind );
+          finish(identifierPos);
+          I = new Identifier(spelling, identifierPos);
+      }
+    } else {
+      I = null;
+      syntacticError("identifier expected here", "");
+    }
+    return I;
+  }
+  
+ Identifier parseSingleIdentifier() throws SyntaxError {
+    Identifier I = null;
+
+      if (currentToken.kind == Token.IDENTIFIER) {
       previousTokenPosition = currentToken.position;
       String spelling = currentToken.spelling;
       I = new Identifier(spelling, previousTokenPosition);
@@ -271,14 +305,14 @@ public class Parser {
       I = null;
       syntacticError("identifier expected here", "");
     }
+    
     return I;
   }
   
   PackageIdentifier parsePackageIdentifier() throws SyntaxError {
     PackageIdentifier I = null;
 
-    if (currentToken.kind == Token.PACKAGE) {
-      acceptIt();
+
       if (currentToken.kind == Token.IDENTIFIER) {
       previousTokenPosition = currentToken.position;
       String spelling = currentToken.spelling;
@@ -288,7 +322,7 @@ public class Parser {
       I = null;
       syntacticError("identifier expected here", "");
     }
-    }
+    
     return I;
   }
 // parseOperator parses an operator, and constructs a leaf AST to
@@ -830,6 +864,7 @@ public class Parser {
       {
         acceptIt();
         Identifier iAST = parseIdentifier();
+        System.out.println("Var "+ currentToken.kind);
         accept(Token.COLON);
         TypeDenoter tAST = parseTypeDenoter();
         finish(declarationPos);

@@ -43,6 +43,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -382,6 +383,9 @@ public class TreeVisitor implements Visitor {
         return(createNullary(ast.spelling));
     }
     
+    public Object visitLongIdentifier(LongIdentifier ast, Object obj) {
+        return(createNullary(ast.P.spelling + "$" +ast.spelling));
+    }
     public Object visitPackageIdentifier(PackageIdentifier ast, Object obj) {
         return(createNullary(ast.spelling));
     }
@@ -409,7 +413,9 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitProgram(Program ast, Object obj) {
-        return(createBinary("Program", ast.C,ast.D));
+        if(ast.D == null)
+            return createUnary("Program", ast.C);
+        return createBinary("Program",ast.D, ast.C);
     }
     public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o) {
                 return(createUnary("SinglePackageDeclaration", ast.D));
