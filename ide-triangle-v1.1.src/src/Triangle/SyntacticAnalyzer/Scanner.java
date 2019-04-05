@@ -131,7 +131,12 @@ public final class Scanner {
 
     case '.':
       takeIt();
-      return Token.DOT;
+      if (currentChar == '.') {          //Comprobar si es doble punto NUEVO
+        takeIt();
+        return Token.DOTDOT;
+      } else
+      
+        return Token.DOT;
 
     case ':':
       takeIt();

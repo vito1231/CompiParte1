@@ -518,7 +518,9 @@ public class Parser {
     case Token.LET:
     {
         acceptIt();
+        System.out.println("Entra a LET");
         Declaration dAST = parseDeclaration();
+        
         accept(Token.IN);
         Command cAST = parseCommand();
         accept(Token.END);
@@ -949,11 +951,6 @@ public class Parser {
     }
     return vAST;
   }
-///////////////////////////////////////////////////////////////////////////////
-//
-// Proc-Func
-//
-///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -968,6 +965,7 @@ public class Parser {
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
     declarationAST = parseCompoundDeclaration();
+    System.out.println("Entra a Declaration");
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
       Declaration d2AST = parseCompoundDeclaration();
@@ -982,16 +980,19 @@ public class Parser {
     
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST=parseSingleDeclaration();
+    System.out.println("Entra a compoundD");
     switch(currentToken.kind){
         case Token.RECURSIVE:
         {
+            
+            System.out.println("Entra a recursive");
             acceptIt();
             Declaration pfAST=parseProcFuncs();
             accept(Token.END);
             declarationAST=new RecursiveDeclaration(pfAST, declarationPos);          
             break;
         }
+        
         case Token.PRIVATE:
         {
            acceptIt();
@@ -1002,6 +1003,7 @@ public class Parser {
            declarationAST= new PrivateDeclaration(d1AST, d2AST, declarationPos);
            break;
         }
+        
         case Token.PAR:
         {
             acceptIt();
@@ -1017,9 +1019,8 @@ public class Parser {
             break;
         }
         default:
-             syntacticError("\"%\" cannot start a declaration",
-            currentToken.spelling);
-            break;
+                declarationAST = parseSingleDeclaration();
+                break;
     }
     return declarationAST;
 }
