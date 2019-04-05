@@ -385,6 +385,7 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
+        System.out.println("CHOOSE ENTRO A IDENTIFIER");
         Identifier iAST = parseIdentifier();
         if (currentToken.kind == Token.LPAREN) {
           acceptIt();
@@ -531,8 +532,10 @@ public class Parser {
         commandAST = new IfCommand(eAST, cAST,c1AST, commandPos);
         break;
     }
+    
     case Token.CHOOSE:
     {
+        System.out.println("ENTROOOOOOO");
         acceptIt();
         Expression eAST=parseExpression();
         accept(Token.FROM);

@@ -31,7 +31,7 @@ final class Token extends Object {
 
       while (searching) {
         int comparison = tokenTable[currentKind].compareTo(spelling);
-        System.out.println(comparison);
+        
         if (comparison == 0) {
           this.kind = currentKind;
           searching = false;
@@ -72,8 +72,9 @@ final class Token extends Object {
     // reserved words - must be in alphabetical order...
     ARRAY		       = 4,
     ////BEGIN		= 5,
-    CONST		       = 5,
-    CHOOSE         = 6,
+    CHOOSE         = 5,
+    CONST		       = 6,
+    
     DO			       = 7,
     ELSE		       = 8,
     END			       = 9,
@@ -132,8 +133,9 @@ final class Token extends Object {
     "<operator>",
     "array",
     ////"begin",
-    "const",
     "choose",
+    "const",
+    
     "do",
     "else",
     "end",
