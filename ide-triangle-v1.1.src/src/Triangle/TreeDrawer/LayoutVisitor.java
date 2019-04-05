@@ -615,8 +615,10 @@ public class LayoutVisitor implements Visitor {
   }
 
     @Override
-    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-        return layoutBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {    
+        if(aThis.caselite != null)
+             return layoutBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
+        return layoutUnary("CaseLiteral",aThis.caselite2);
     }
 
     @Override

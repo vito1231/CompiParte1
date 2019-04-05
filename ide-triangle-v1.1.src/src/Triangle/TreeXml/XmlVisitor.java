@@ -505,7 +505,9 @@ public class XmlVisitor implements Visitor {
 
         @Override
     public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-        return xmlBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
+        if(aThis.caselite != null)
+            return xmlBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
+        return xmlUnary("CaseLiteral",aThis.caselite2);
     }
 
     @Override

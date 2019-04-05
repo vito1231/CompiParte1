@@ -519,12 +519,14 @@ public class TreeVisitor implements Visitor {
 
          @Override
     public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-        return(createBinary("Case Literal", aThis.caselite,aThis.caselite2));
+        if(aThis.caselite != null)
+            return(createBinary("Case Literal", aThis.caselite,aThis.caselite2));
+        return(createUnary("Case Literal",aThis.caselite2));
     }
     
     @Override
     public Object visitChooseCommand(ChooseCommand aThis, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (createBinary("Choose Command", aThis.E, aThis.C));
     }
 
     @Override
