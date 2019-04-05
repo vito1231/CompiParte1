@@ -68,6 +68,7 @@ import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
 import Triangle.AbstractSyntaxTrees.PackageIdentifier;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -91,6 +92,7 @@ import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.UntilCommand;
+import Triangle.AbstractSyntaxTrees.VarADeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -613,7 +615,8 @@ public class LayoutVisitor implements Visitor {
 
     return r;
   }
-
+  
+  
     @Override
     public Object visitCaseLiteral(CaseLiteral aThis, Object o) {    
         if(aThis.caselite != null)
@@ -644,6 +647,32 @@ public class LayoutVisitor implements Visitor {
     @Override
     public Object visitSCase(SCase aThis, Object o) {
         return layoutBinary("SequencialCase", aThis.C1, aThis.C2);
+    }
+        @Override
+    public Object privateDeclaration(Triangle.AbstractSyntaxTrees.PrivateDeclaration aThis, Object o) {
+        return layoutBinary("PrivateDeclaration", aThis.D1, aThis.D2);
+        
+    }
+
+
+    @Override
+    public Object ParDeclaration(Triangle.AbstractSyntaxTrees.ParDeclaration aThis, Object o) {
+        return layoutBinary("ParDeclaration", aThis.D1, aThis.D2);
+    }
+
+    @Override
+    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
+        return layoutBinary("ProcFuncDeclaration", aThis.D1, aThis.D2);
+    }
+
+    @Override
+    public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {
+        return layoutUnary("ProcFuncDeclaration", aThis.D1);
+    }
+
+    @Override
+    public Object visitVarADeclaration(VarADeclaration aThis, Object o) {
+        return layoutBinary("VarAsDeclaration", aThis.I, aThis.E);
     }
 
 }

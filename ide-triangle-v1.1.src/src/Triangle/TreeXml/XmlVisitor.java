@@ -89,6 +89,7 @@ import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.UntilCommand;
+import Triangle.AbstractSyntaxTrees.VarADeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -534,6 +535,29 @@ public class XmlVisitor implements Visitor {
     public Object visitSCase(SCase aThis, Object o) {
         return xmlBinary("SequencialCase", aThis.C1, aThis.C2);
     }
+    @Override
+    public Object privateDeclaration(Triangle.AbstractSyntaxTrees.PrivateDeclaration aThis, Object o) {
+        return xmlBinary("PrivateDeclaration", aThis.D1, aThis.D2);
+        
+    }
 
-  
+    @Override
+    public Object ParDeclaration(Triangle.AbstractSyntaxTrees.ParDeclaration aThis, Object o) {
+        return xmlBinary("ParDeclaration", aThis.D1, aThis.D2);
+        
+    }
+
+    @Override
+    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
+         return xmlBinary("ProcFuncDeclaration", aThis.D1, aThis.D2);
+    }
+
+    @Override
+    public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {
+        return xmlUnary("ProcFuncDeclaration", aThis.D1);
+    }
+  @Override
+    public Object visitVarADeclaration(VarADeclaration aThis, Object o) {
+        return xmlBinary("VarAsDeclaration", aThis.I, aThis.E);
+    }
 }

@@ -79,6 +79,7 @@ import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.UntilCommand;
+import Triangle.AbstractSyntaxTrees.VarADeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -756,7 +757,40 @@ public class TableVisitor implements Visitor {
         return(null);
     }
 
+    @Override
+    public Object privateDeclaration(Triangle.AbstractSyntaxTrees.PrivateDeclaration aThis, Object o) {
+        aThis.D1.visit(this,null);
+        aThis.D2.visit(this,null);
+        return (null);
+    }
 
+    @Override
+    public Object ParDeclaration(Triangle.AbstractSyntaxTrees.ParDeclaration aThis, Object o) {
+        aThis.D1.visit(this,null);
+        aThis.D2.visit(this,null);
+        return (null); 
+    }
+
+    @Override
+    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
+        aThis.D1.visit(this,null);
+        aThis.D2.visit(this,null);
+        return (null); 
+    }
+
+    @Override
+    public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {
+        aThis.D1.visit(this,null);
+        
+        return (null); 
+    }
+
+    @Override
+    public Object visitVarADeclaration(VarADeclaration aThis, Object o) {
+        aThis.I.visit(this,null);
+        aThis.E.visit(this,null);
+        return (null); 
+    }
 
    
    

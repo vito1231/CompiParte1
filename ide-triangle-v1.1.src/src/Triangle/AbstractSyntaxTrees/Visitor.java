@@ -54,7 +54,11 @@ public interface Visitor {
   public abstract Object visitTypeDeclaration(TypeDeclaration ast, Object o);
   public abstract Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast, Object o);
   public abstract Object visitVarDeclaration(VarDeclaration ast, Object o);
-
+  public abstract Object privateDeclaration(PrivateDeclaration aThis, Object o);
+  public abstract Object ParDeclaration(ParDeclaration aThis, Object o);
+  public abstract Object ProcFuncDeclaration(ProcFuncDeclaration aThis, Object o);
+  public abstract Object RecursiveDeclaration(RecursiveDeclaration aThis, Object o);
+  public abstract Object visitVarADeclaration(VarADeclaration aThis, Object o);
   // Array Aggregates
   public abstract Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object o);
   public abstract Object visitSingleArrayAggregate(SingleArrayAggregate ast, Object o);
@@ -122,5 +126,15 @@ public interface Visitor {
   public abstract Object visitComCase(ComCase aThis, Object o);
   public abstract Object visitElseCase(ElseCase aThis, Object o);
   public abstract Object visitSCase(SCase aThis, Object o);
+
+    
+
+    
+
+    
+
+    
+
+  
   
 }
