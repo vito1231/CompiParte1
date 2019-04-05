@@ -24,8 +24,12 @@ import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
+import Triangle.AbstractSyntaxTrees.ComCase;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
@@ -34,6 +38,7 @@ import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DoUntilCommand;
 import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -69,6 +74,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
@@ -401,6 +407,7 @@ public class Parser {
     case Token.PASS:
     {
         acceptIt();
+        commandAST= new EmptyCommand(commandPos);
         break;
     }
     
@@ -426,6 +433,7 @@ public class Parser {
                 accept(Token.DO);
                 Command cAST = parseCommand();
                 accept(Token.END);
+                
                 commandAST = new UntilCommand(eAST, cAST, commandPos);
                 break;
                         
@@ -529,8 +537,9 @@ public class Parser {
         Expression eAST=parseExpression();
         accept(Token.FROM);
         //falta ParserCases
-        
+        Command casAST=parseCases();
         accept(Token.END);
+        commandAST=new ChooseCommand(eAST, casAST, commandPos);
         break;
     }
 //    case Token.BEGIN:
@@ -593,6 +602,120 @@ public class Parser {
 
     return commandAST;
   }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// CASES
+//
+///////////////////////////////////////////////////////////////////////////////
+  
+  Command parseCases()throws SyntaxError{
+      Command casesAST=null;
+      SourcePosition expressionPos = new SourcePosition();
+      start (expressionPos);
+      casesAST=parseCase();
+      while(currentToken.kind==Token.WHEN){
+          Command csAST=parseCase();
+          finish(expressionPos);
+          casesAST = new SCase(casesAST, csAST, expressionPos);
+          
+      }
+      if(currentToken.kind==Token.ELSE){
+          Command elsAST=parseElseCase();
+          finish(expressionPos);
+          casesAST=new ElseCase(elsAST, expressionPos);
+      }
+      
+      return casesAST;
+  }
+  
+  Command parseCase()throws SyntaxError{
+      Command caseAST=null;
+      SourcePosition expressionPos = new SourcePosition();
+      start (expressionPos);
+      accept(Token.WHEN);
+      Expression cLAST=parseCaseLiterals();
+      accept(Token.THEN);
+      Command cAST=parseCommand();
+      finish(expressionPos);
+      caseAST=new ComCase(cLAST,cAST,expressionPos);
+      return caseAST;
+  }
+  
+  Command parseElseCase()throws SyntaxError{
+      Command elseCase=null;
+      SourcePosition expressionPos = new SourcePosition();
+      start (expressionPos);
+      accept(Token.ELSE);
+      Command cAST=parseCommand();
+      finish(expressionPos);
+      elseCase=new ElseCase(cAST, expressionPos);
+      return elseCase;
+  }
+  
+  Expression parseCaseLiterals()throws SyntaxError{
+      Expression caseLiterals=null;
+      SourcePosition expressionPos = new SourcePosition();
+      start (expressionPos);
+      caseLiterals=parseCaseRange();
+      while(currentToken.kind==Token.PIPE){
+          acceptIt();
+          Expression cr2AST=parseCaseRange();
+          finish(expressionPos);
+          caseLiterals=new CaseRange(caseLiterals, cr2AST, expressionPos);
+      }
+      return caseLiterals;
+  }
+  
+  Expression parseCaseRange()throws SyntaxError{
+      Expression caseRange=null;
+      SourcePosition expressionPos = new SourcePosition();
+      start (expressionPos);
+      caseRange= parseCaseLiteral();
+      if(currentToken.kind==Token.DOTDOT){
+          acceptIt();
+          Expression eAST=parseCaseLiteral();
+          finish(expressionPos);
+          caseRange=new CaseLiteral(caseRange, eAST, expressionPos);
+      }
+      else{
+          finish(expressionPos);
+          caseRange=new CaseLiteral(caseRange,null,expressionPos);
+      }
+      return caseRange;
+  }
+    
+  Expression parseCaseLiteral()throws SyntaxError{
+      Expression caseLit = null; // in case there's a syntactic error
+
+    SourcePosition expressionPos = new SourcePosition();
+    start (expressionPos);
+    switch(currentToken.kind){
+        case Token.INTLITERAL:{
+            IntegerLiteral ilAST = parseIntegerLiteral();
+            finish(expressionPos);
+            caseLit = new IntegerExpression(ilAST,expressionPos);
+            
+            
+        }
+        break;
+        case Token.CHARLITERAL:{
+            CharacterLiteral clAST= parseCharacterLiteral();
+            finish(expressionPos);
+            caseLit = new CharacterExpression(clAST, expressionPos);
+            
+        }
+        break;
+        default:{
+            syntacticError("\"%\" cannot start a formal parameter",
+        currentToken.spelling);
+         
+        }
+        break;
+    }
+    
+    return caseLit;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //

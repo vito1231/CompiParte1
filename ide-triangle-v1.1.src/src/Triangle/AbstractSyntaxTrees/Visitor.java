@@ -30,6 +30,7 @@ public interface Visitor {
   public abstract Object visitForCommand(ForCommand ast, Object o);
   public abstract Object visitForWhileCommand(ForWhileCommand ast, Object o);
   public abstract Object visitForUntilCommand(ForUntilCommand ast, Object o);
+  public Object visitChooseCommand(ChooseCommand aThis, Object o);
 
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
@@ -116,5 +117,10 @@ public interface Visitor {
   public abstract Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o);
 
   public abstract Object visitCaseLiteral(CaseLiteral aThis, Object o);
-
+  // Cases
+  public abstract Object visitCaseRange(CaseRange aThis, Object o);
+  public abstract Object visitComCase(ComCase aThis, Object o);
+  public abstract Object visitElseCase(ElseCase aThis, Object o);
+  public abstract Object visitSCase(SCase aThis, Object o);
+  
 }

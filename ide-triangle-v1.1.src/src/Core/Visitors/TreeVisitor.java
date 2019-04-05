@@ -15,15 +15,19 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
+import Triangle.AbstractSyntaxTrees.ComCase;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DoUntilCommand;
 import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -58,6 +62,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
@@ -161,10 +166,7 @@ public class TreeVisitor implements Visitor {
 
     }
     
-     @Override
-    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-        return(createBinary("CaseLiteral", aThis.IntegerLiteral, aThis.CharacterLiteral));
-    }
+
     
     // </editor-fold>
     
@@ -514,6 +516,36 @@ public class TreeVisitor implements Visitor {
         return(t);             
     }
     // </editor-fold>
+
+         @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+        return(createBinary("Case Literal", aThis.caselite,aThis.caselite2));
+    }
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand aThis, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitCaseRange(CaseRange aThis, Object o) {
+        return(createBinary("Case Range", aThis.caseRange,aThis.caseRange2));
+    }
+
+    @Override
+    public Object visitComCase(ComCase aThis, Object o) {
+        return(createBinary("Case", aThis.CL, aThis.C));
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase aThis, Object o) {
+        return(createUnary("Else Case", aThis.C1));
+    }
+
+    @Override
+    public Object visitSCase(SCase aThis, Object o) {
+        return(createBinary("Sequencial Case",aThis.C1,aThis.C2));
+    }
 
     
 

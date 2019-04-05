@@ -25,15 +25,19 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
+import Triangle.AbstractSyntaxTrees.ComCase;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DoUntilCommand;
 import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -68,6 +72,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
@@ -159,10 +164,6 @@ public class XmlVisitor implements Visitor {
     return xmlFive("UntilCommand",ast.I, ast.E, ast.E2, ast.E2, ast.C);
   }
   
-    @Override
-    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-       return xmlBinary("CaseLiteral", aThis.IntegerLiteral, aThis.CharacterLiteral);
-    }
 
 
   // Expressions
@@ -501,6 +502,36 @@ public class XmlVisitor implements Visitor {
        generatedElement.appendChild(childElmenet5);
        return generatedElement;
   }
+
+        @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+        return xmlBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
+    }
+
+    @Override
+    public Object visitChooseCommand(ChooseCommand aThis, Object o) {
+        return xmlBinary("ChooseCommand", aThis.E, aThis.C);
+    }
+
+    @Override
+    public Object visitCaseRange(CaseRange aThis, Object o) {
+       return xmlBinary("CaseRange", aThis.caseRange,aThis.caseRange2);
+    }
+
+    @Override
+    public Object visitComCase(ComCase aThis, Object o) {
+        return xmlBinary("Case", aThis.CL, aThis.C);
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase aThis, Object o) {
+        return xmlUnary("ElseCase", aThis.C1);
+    }
+
+    @Override
+    public Object visitSCase(SCase aThis, Object o) {
+        return xmlBinary("SequencialCase", aThis.C1, aThis.C2);
+    }
 
   
 }

@@ -26,9 +26,12 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
+import Triangle.AbstractSyntaxTrees.ComCase;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
@@ -36,6 +39,7 @@ import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DoUntilCommand;
 import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -73,6 +77,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
@@ -1039,10 +1044,7 @@ public final class Checker implements Visitor {
   
   
   //not implemented functions
-    @Override
-    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
     @Override
     public Object visitSinglePackageDeclaration(SinglePackageDeclaration ast, Object o) {
             ast.D.visit(this, null);
@@ -1053,5 +1055,47 @@ public final class Checker implements Visitor {
             ast.D.visit(this, null);
             ast.D2.visit(this, null);
             return null;
+    }
+    
+    
+    @Override
+    public Object visitCaseLiteral(CaseLiteral aThis, Object o) {
+        aThis.caselite.visit(this,null);
+        aThis.caselite2.visit(this,null);
+        
+        return null;    }
+    
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand aThis, Object o) {
+        aThis.E.visit(this, null);
+        aThis.C.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseRange(CaseRange aThis, Object o) {
+        aThis.caseRange.visit(this,null);
+        aThis.caseRange2.visit(this,null);
+        
+        return null;    }
+
+    @Override
+    public Object visitComCase(ComCase aThis, Object o) {
+        aThis.CL.visit(this, null);
+        aThis.C.visit(this, null);
+        return null;    
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase aThis, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitSCase(SCase aThis, Object o) {
+        aThis.C1.visit(this, null);
+        aThis.C2.visit(this, null);
+        return null;
     }
 }

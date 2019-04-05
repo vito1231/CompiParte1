@@ -31,6 +31,7 @@ final class Token extends Object {
 
       while (searching) {
         int comparison = tokenTable[currentKind].compareTo(spelling);
+        System.out.println(comparison);
         if (comparison == 0) {
           this.kind = currentKind;
           searching = false;
@@ -109,19 +110,20 @@ final class Token extends Object {
     PIPE           = 38,
     ASSIGN         = 39,
     DOLAR			     = 40,
+    DOTDOT =41,
 
 
     // brackets...
-    LPAREN		     = 41,
-    RPAREN		     = 42,
-    LBRACKET	     = 43,
-    RBRACKET	     = 44,
-    LCURLY		     = 45,
-    RCURLY		     = 46,
+    LPAREN		     = 42,
+    RPAREN		     = 43,
+    LBRACKET	     = 44,
+    RBRACKET	     = 45,
+    LCURLY		     = 46,
+    RCURLY		     = 47,
 
     // special tokens...
-    EOT			       = 47,
-    ERROR		       = 48;
+    EOT			       = 48,
+    ERROR		       = 49;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -166,6 +168,7 @@ final class Token extends Object {
     "|",
     "::=",
     "$",
+    "..",
     "(",
     ")",
     "[",

@@ -11,15 +11,17 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  *
  * @author vicnb
  */
-public class CaseLiteral extends Command {
+public class CaseLiteral extends Expression {
 
-    public IntegerLiteral IntegerLiteral;
-    public CharacterLiteral CharacterLiteral;
+    public Expression caselite2;
+    public Expression caselite;
+  
     
-    public CaseLiteral(IntegerLiteral intLit,CharacterLiteral chaLit,SourcePosition thePosition) {
+    public CaseLiteral(Expression eAST,Expression cslAST,SourcePosition thePosition) {
         super(thePosition);
-        IntegerLiteral=intLit;
-        CharacterLiteral=chaLit;  
+         caselite=cslAST;
+         caselite2=eAST;
+         
     }
 
 
