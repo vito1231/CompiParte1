@@ -525,6 +525,14 @@ public class TreeVisitor implements Visitor {
         return(createUnary("Case Literal",aThis.caselite2));
     }
     
+        @Override
+    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
+        if(aThis.D2 !=null)
+            return(createBinary("Proc-Func Declaration",aThis.D1,aThis.D2));
+        return(createUnary("Proc-Func Declaration",aThis.D1));
+        
+    }
+    
     @Override
     public Object visitChooseCommand(ChooseCommand aThis, Object o) {
         return (createBinary("Choose Command", aThis.E, aThis.C));
@@ -560,10 +568,7 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Par Declaration",aThis.D1,aThis.D2));
     }
 
-    @Override
-    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
-        return(createBinary("Proc-Func Declaration",aThis.D1,aThis.D2));
-    }
+
 
     @Override
     public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {

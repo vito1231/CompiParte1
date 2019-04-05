@@ -510,6 +510,12 @@ public class XmlVisitor implements Visitor {
             return xmlBinary("CaseLiteral", aThis.caselite,aThis.caselite2);
         return xmlUnary("CaseLiteral",aThis.caselite2);
     }
+        @Override
+    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
+        if(aThis.D2!=null) 
+            return xmlBinary("ProcFuncDeclaration", aThis.D1, aThis.D2);
+        return xmlUnary("ProcFuncDeclaration", aThis.D1);
+    }
 
     @Override
     public Object visitChooseCommand(ChooseCommand aThis, Object o) {
@@ -547,10 +553,7 @@ public class XmlVisitor implements Visitor {
         
     }
 
-    @Override
-    public Object ProcFuncDeclaration(Triangle.AbstractSyntaxTrees.ProcFuncDeclaration aThis, Object o) {
-         return xmlBinary("ProcFuncDeclaration", aThis.D1, aThis.D2);
-    }
+
 
     @Override
     public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {

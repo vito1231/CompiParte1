@@ -1012,10 +1012,11 @@ public class Parser {
             Declaration d2AST=parseSingleDeclaration();
             while(currentToken.kind==Token.PIPE){
                 acceptIt();
-                d2AST=parseSingleDeclaration();
+                d2AST= parseSingleDeclaration();
+                declarationAST =new SequentialDeclaration(d1AST, d2AST, declarationPos);
             }
             accept(Token.END);
-            declarationAST=new ParDeclaration(d1AST, d2AST, declarationPos);
+            declarationAST=new ParDeclaration(d1AST, declarationAST, declarationPos);
             break;
         }
         default:
@@ -1025,18 +1026,26 @@ public class Parser {
     return declarationAST;
 }
 
+    private boolean flag=true;
   Declaration parseProcFuncs() throws SyntaxError{
       Declaration declarationAST = null; // in case there's a syntactic error
 
       SourcePosition declarationPos = new SourcePosition();
       start(declarationPos);
-      declarationAST=parseProcFunc();
-      accept(Token.PIPE);
-      Declaration dAST=parseProcFunc();
-      while(currentToken.kind==Token.PIPE){
+      Declaration pfAST=parseProcFunc();
+      if(flag){
+          if(currentToken.kind != Token.PIPE){
+              syntacticError("| expected here", "");
+          }else{
+              flag=false;
+          }
+      }
+      if(currentToken.kind == Token.PIPE){
           acceptIt();
-          dAST=parseProcFunc();
-          declarationAST= new ProcFuncDeclaration(declarationAST,dAST,declarationPos);
+          declarationAST=new ProcFuncDeclaration(pfAST,parseProcFuncs(),declarationPos);
+      }
+      else{
+          declarationAST = new ProcFuncDeclaration(pfAST,null,declarationPos);
       }
       return declarationAST;
   }
@@ -1051,11 +1060,13 @@ public class Parser {
         {
             acceptIt();
             Identifier iAST= parseIdentifier();
+            
             accept(Token.LPAREN);
             FormalParameterSequence fpsAST = parseFormalParameterSequence();
-            accept(Token.RBRACKET);
+            accept(Token.RPAREN);
             accept(Token.IS);
             Command cAST = parseCommand();
+            accept(Token.END);
             declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
             break;
         }

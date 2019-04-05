@@ -157,6 +157,7 @@ public final class Scanner {
     case '~':
       takeIt();
       return Token.IS;
+      
     case '|':
       takeIt();
       return Token.PIPE;
