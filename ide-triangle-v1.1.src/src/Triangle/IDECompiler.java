@@ -13,6 +13,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.ContextualAnalyzer.Checker;
 import Triangle.CodeGenerator.Encoder;
+import Triangle.Html.Html;
 import Triangle.TreeXml.XmlGenerator;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -88,6 +89,18 @@ public class IDECompiler {
                     success = true;
                 }
             }
+        }
+        
+        //generate html
+        try {
+            SourceFile source2 = new SourceFile(sourceName);
+            Html html = new Html(sourceName.replace(".tri", ""));
+            Scanner scanner2 = new Scanner(source2);
+            scanner2.enableDebugging();//enable scaner debug
+            //System.out.println(scanner2.scan().toString());
+            html.generateHtml(scanner2);
+        } 
+        catch (Exception e) {
         }
 
         if (success)

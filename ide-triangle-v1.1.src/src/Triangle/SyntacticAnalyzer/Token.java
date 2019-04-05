@@ -17,7 +17,7 @@
 package Triangle.SyntacticAnalyzer;
 
 
-final class Token extends Object {
+public final class Token extends Object {
 
   protected int kind;
   protected String spelling;
@@ -50,6 +50,14 @@ final class Token extends Object {
 
   }
 
+    public int getKind() {
+        return kind;
+    }
+
+    public String getSpelling() {
+        return spelling;
+    }
+  
   public static String spell (int kind) {
     return tokenTable[kind];
   }
