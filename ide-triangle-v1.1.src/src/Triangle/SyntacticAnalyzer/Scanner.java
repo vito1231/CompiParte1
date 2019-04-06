@@ -143,7 +143,16 @@ public final class Scanner {
       if (currentChar == '=') {
         takeIt();
         return Token.BECOMES;
-      } else
+      } 
+      else if(currentChar == ':'){
+          takeIt();
+          if(currentChar == '='){
+              takeIt();
+              return Token.ASSIGN;
+          }
+          
+      }
+      else 
         return Token.COLON;
 
     case ';':
@@ -161,6 +170,8 @@ public final class Scanner {
     case '|':
       takeIt();
       return Token.PIPE;
+      
+      
     case '$':
       takeIt();
       return Token.DOLAR;

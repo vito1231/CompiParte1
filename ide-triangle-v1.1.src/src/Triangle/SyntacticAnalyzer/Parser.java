@@ -1039,7 +1039,7 @@ public class Parser {
           }else{
               flag=false;
           }
-      }
+      } 
       if(currentToken.kind == Token.PIPE){
           acceptIt();
           declarationAST=new ProcFuncDeclaration(pfAST,parseProcFuncs(),declarationPos);
