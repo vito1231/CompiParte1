@@ -58,7 +58,7 @@ public class IDECompiler {
         rootAST = parser.parseProgram();
         
         
-        System.out.println("Valid command on program: " + !(rootAST.C == null));
+        //System.out.println("Valid command on program: " + !(rootAST.C == null));
         //generate xml
         try{
             XmlGenerator generator = new XmlGenerator(rootAST);
@@ -70,8 +70,9 @@ public class IDECompiler {
             e.printStackTrace(System.out);
         }
         catch(Exception e){
-            System.out.println("Error saving file" + e.toString());
-            e.printStackTrace(System.out);
+            System.out.println("Error generating xml file" + e.toString());
+            //System.out.println("Error saving file" + e.toString());
+           //e.printStackTrace(System.out);
         }
         
         

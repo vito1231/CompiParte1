@@ -844,6 +844,10 @@ public class Parser {
           expressionAST = new CallExpression(iAST, apsAST, expressionPos);
 
         } else {
+            
+          /*if(currentToken.kind == Token.DOLAR){
+              acceptIt();
+          }*/
           Vname vAST = parseRestOfVname(iAST);
           finish(expressionPos);
           expressionAST = new VnameExpression(vAST, expressionPos);
@@ -922,9 +926,14 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-  Vname parseVname () throws SyntaxError {
+Vname parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
+    //parse $ identifier
+    if(currentToken.kind == Token.DOLAR){
+        acceptIt();
+        iAST = new PackageIdentifier(iAST);
+    }
     vnameAST = parseRestOfVname(iAST);
     return vnameAST;
   }
