@@ -1082,6 +1082,7 @@ public class Parser {
             accept(Token.IS);
             Expression eAST = parseExpression();
             declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,declarationPos);
+            break;
         }
         default:
       syntacticError("\"%\" cannot start a declaration",
