@@ -96,7 +96,7 @@ public class IDECompiler {
             SourceFile source2 = new SourceFile(sourceName);
             Html html = new Html(sourceName.replace(".tri", ""));
             Scanner scanner2 = new Scanner(source2);
-            scanner2.enableDebugging();//enable scaner debug
+            //scanner2.enableDebugging();//enable scaner debug
             //System.out.println(scanner2.scan().toString());
             html.generateHtml(scanner2);
         } 

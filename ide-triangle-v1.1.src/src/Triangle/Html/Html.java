@@ -28,30 +28,43 @@ public class Html {
     }
     
     public void generateHtml(Scanner scanner){
-      Token currentToken;
-      currentToken = scanner.scan();
-      header();
-      while(currentToken.getKind() != Token.EOT){
-          if(currentToken.getKind() == Token.SEMICOLON){
-              texto(currentToken.getSpelling());
-              cambioLinea();
-              currentToken = scanner.scan();
-          }
-          if(currentToken.getKind() >= Token.ARRAY && currentToken.getKind() <= Token.WHILE){
-              reservada(currentToken.getSpelling());
-              currentToken = scanner.scan();
-          }
-          if(currentToken.getKind() >= Token.DOT && currentToken.getKind() <= Token.DOLAR){
-              operador(currentToken.getSpelling());
-              currentToken = scanner.scan();
-          }
-          
-          else{
-              texto(currentToken.getSpelling());
-              currentToken = scanner.scan();
-          }
-      }
-      footer();
+        try {
+            Token currentToken;
+            currentToken = scanner.scanWithComm();
+            header();
+            while(currentToken.getKind() != Token.EOT){
+                if(currentToken.getKind() == Token.COMMENT){
+                    //System.out.println(currentToken.getSpelling());
+                    //System.out.println(currentToken.getKind());
+                    comentarios(currentToken.getSpelling());
+                    cambioLinea();
+                    currentToken = scanner.scanWithComm();
+                }
+                if(currentToken.getKind() >= Token.ARRAY && currentToken.getKind() <= Token.WHILE){
+                    reservada(currentToken.getSpelling());
+                    currentToken = scanner.scanWithComm();
+                }
+                if(currentToken.getKind() == Token.IDENTIFIER || currentToken.getKind() == Token.OPERATOR ||
+                        (currentToken.getKind() >= Token.DOT && currentToken.getKind() <= Token.DOTDOT)){
+                    operador(currentToken.getSpelling());
+                    currentToken = scanner.scanWithComm();
+                }
+                if(currentToken.getKind() == Token.SEMICOLON){
+                    operador(currentToken.getSpelling());
+                    cambioLinea();
+                    currentToken = scanner.scanWithComm();
+                }
+                else{
+                    //System.out.println(currentToken.getKind());
+                    texto(currentToken.getSpelling());
+                    currentToken = scanner.scanWithComm();
+                }
+            }
+            footer();
+            System.out.println("Done saving html to " + f);
+        } catch (Exception e) {
+            System.out.println("Error saving html to " + f + " "+ e.toString());
+        }
     }
     
     public void header(){    

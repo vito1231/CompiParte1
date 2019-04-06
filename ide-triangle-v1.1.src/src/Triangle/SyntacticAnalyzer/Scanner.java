@@ -224,5 +224,45 @@ public final class Scanner {
       System.out.println(tok);
     return tok;
   }
+  
+  public Token scanWithComm () {
+    Token tok;
+    SourcePosition pos;
+    int kind;
+
+    currentlyScanningToken = false;
+    if (currentChar == '!'
+           || currentChar == ' '
+           || currentChar == '\n'
+           || currentChar == '\r'
+           || currentChar == '\t'){
+        
+        currentSpelling = new StringBuffer("");
+        
+        currentlyScanningToken = true;
+        pos = new SourcePosition();
+        pos.start = sourceFile.getCurrentLine();
+
+        scanSeparator();
+        kind = Token.COMMENT;
+        
+        pos.finish = sourceFile.getCurrentLine();
+        tok = new Token(kind, currentSpelling.toString(), pos);
+        return tok;
+    }
+
+    currentlyScanningToken = true;
+    currentSpelling = new StringBuffer("");
+    pos = new SourcePosition();
+    pos.start = sourceFile.getCurrentLine();
+
+    kind = scanToken();
+
+    pos.finish = sourceFile.getCurrentLine();
+    tok = new Token(kind, currentSpelling.toString(), pos);
+    if (debug)
+      System.out.println(tok);
+    return tok;
+  }
 
 }
