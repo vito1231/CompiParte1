@@ -1039,7 +1039,7 @@ public class Parser {
           }else{
               flag=false;
           }
-      }
+      } 
       if(currentToken.kind == Token.PIPE){
           acceptIt();
           declarationAST=new ProcFuncDeclaration(pfAST,parseProcFuncs(),declarationPos);
@@ -1082,6 +1082,7 @@ public class Parser {
             accept(Token.IS);
             Expression eAST = parseExpression();
             declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,declarationPos);
+            break;
         }
         default:
       syntacticError("\"%\" cannot start a declaration",

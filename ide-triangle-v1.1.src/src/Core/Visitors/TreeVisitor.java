@@ -567,9 +567,7 @@ public class TreeVisitor implements Visitor {
     public Object ParDeclaration(Triangle.AbstractSyntaxTrees.ParDeclaration aThis, Object o) {
         return(createBinary("Par Declaration",aThis.D1,aThis.D2));
     }
-
-
-
+    
     @Override
     public Object RecursiveDeclaration(Triangle.AbstractSyntaxTrees.RecursiveDeclaration aThis, Object o) {
         return(createUnary("Recursive Declaration",aThis.D1));
